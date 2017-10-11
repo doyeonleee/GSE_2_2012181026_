@@ -14,26 +14,37 @@ but WITHOUT ANY WARRANTY.
 #include "Dependencies\freeglut.h"
 
 #include "Renderer.h"
-#include "ObjectManager.h"
+#include "Object.h"
 
 Renderer *g_Renderer = NULL;
+//ObjectManager Rect(0, 0, 0, 4, 1, 0, 1, 1);
+
+Object *Rect = NULL;
+//Object *Rect2 = NULL;
 
 void RenderScene(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
 
-	ObjectManager Rect(0, 0, 0, 4, 1, 0, 1, 1);
-
 	// Renderer Test
 	
 	//g_Renderer->DrawSolidRect(0, 0, 0, 4, 1, 0, 1, 1);
 	g_Renderer->DrawSolidRect(
-		Rect.GetObjectXposition(), Rect.GetObjectYposition(), Rect.GetObjectZposition(), 
-		Rect.GetObjectSize(), Rect.GetObjectRed(), Rect.GetObjectGreen(), 
-		Rect.GetObjectBlue(), Rect.GetObjectAlpha()
+		Rect->GetObjectXposition(), Rect->GetObjectYposition(), Rect->GetObjectZposition(),
+		Rect->GetObjectSize(), Rect->GetObjectRed(), Rect->GetObjectGreen(),
+		Rect->GetObjectBlue(), Rect->GetObjectAlpha()
 	);
 
+	//g_Renderer->DrawSolidRect(
+	//	Rect2->GetObjectXposition(), Rect2->GetObjectYposition(), Rect2->GetObjectZposition(),
+	//	Rect2->GetObjectSize(), Rect2->GetObjectRed(), Rect2->GetObjectGreen(),
+	//	Rect2->GetObjectBlue(), Rect2->GetObjectAlpha()
+	//);
+
+
+	Rect->Update();
+	//Rect2->Update();
 
 	glutSwapBuffers();
 }
@@ -41,6 +52,13 @@ void RenderScene(void)
 void Idle(void)
 {
 	RenderScene();
+	
+	Rect->Update();
+	//Rect2->Update();
+	//Object->Update():
+	//Object1->Update();
+
+	//glutSwapBuffers();
 }
 
 void MouseInput(int button, int state, int x, int y)
@@ -83,6 +101,10 @@ int main(int argc, char **argv)
 	{
 		std::cout << "Renderer could not be initialized.. \n";
 	}
+
+	Rect = new Object(0, 0, 0, 4, 1, 0, 1, 1);
+	
+	//Rect2 = new Object(1, 10, 1, 4, 1, 0, 1, 1);
 
 	glutDisplayFunc(RenderScene);
 	glutIdleFunc(Idle);
