@@ -15,6 +15,7 @@ but WITHOUT ANY WARRANTY.
 
 #include "Renderer.h"
 #include "Object.h"
+#include "SceneMgr.h"
 
 Renderer *g_Renderer = NULL;
 //ObjectManager Rect(0, 0, 0, 4, 1, 0, 1, 1);
@@ -22,29 +23,37 @@ Renderer *g_Renderer = NULL;
 Object *Rect = NULL;
 //Object *Rect2 = NULL;
 
+SceneMgr *Mgr = NULL;
+
 void RenderScene(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
 
 	// Renderer Test
-	
+
 	//g_Renderer->DrawSolidRect(0, 0, 0, 4, 1, 0, 1, 1);
-	g_Renderer->DrawSolidRect(
-		Rect->GetObjectXposition(), Rect->GetObjectYposition(), Rect->GetObjectZposition(),
-		Rect->GetObjectSize(), Rect->GetObjectRed(), Rect->GetObjectGreen(),
-		Rect->GetObjectBlue(), Rect->GetObjectAlpha()
-	);
+
 
 	//g_Renderer->DrawSolidRect(
-	//	Rect2->GetObjectXposition(), Rect2->GetObjectYposition(), Rect2->GetObjectZposition(),
-	//	Rect2->GetObjectSize(), Rect2->GetObjectRed(), Rect2->GetObjectGreen(),
-	//	Rect2->GetObjectBlue(), Rect2->GetObjectAlpha()
+	//	Rect->GetObjectXposition(), Rect->GetObjectYposition(), Rect->GetObjectZposition(),
+	//	Rect->GetObjectSize(), Rect->GetObjectRed(), Rect->GetObjectGreen(),
+	//	Rect->GetObjectBlue(), Rect->GetObjectAlpha()
 	//);
 
-
-	Rect->Update();
-	//Rect2->Update();
+	for (int i = 0; i < Mgr->MAX_OBJECTS_COUNT; ++i) {
+		g_Renderer->DrawSolidRect(
+			Mgr->m_objects[i]->GetObjectXposition(), 
+			Mgr->m_objects[i]->GetObjectYposition(),
+			Mgr->m_objects[i]->GetObjectZposition(),
+			Mgr->m_objects[i]->GetObjectSize(),
+			Mgr->m_objects[i]->GetObjectRed(),
+			Mgr->m_objects[i]->GetObjectGreen(),
+			Mgr->m_objects[i]->GetObjectBlue(),
+			Mgr->m_objects[i]->GetObjectAlpha()
+			
+			);
+	}
 
 	glutSwapBuffers();
 }
@@ -53,16 +62,26 @@ void Idle(void)
 {
 	RenderScene();
 	
-	Rect->Update();
-	//Rect2->Update();
-	//Object->Update():
-	//Object1->Update();
+	//Rect->Update();
 
-	//glutSwapBuffers();
+	Mgr->SceneUpdate();
+
 }
 
 void MouseInput(int button, int state, int x, int y)
 {
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+	{
+		//g_LButtonDown = true;
+	}
+
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_UP)
+	{
+		//if(g_LButtonDown)
+		{
+
+		}
+	}
 	RenderScene();
 }
 
@@ -103,8 +122,12 @@ int main(int argc, char **argv)
 	}
 
 	Rect = new Object(0, 0, 0, 4, 1, 0, 1, 1);
-	
-	//Rect2 = new Object(1, 10, 1, 4, 1, 0, 1, 1);
+
+	//
+	Mgr = new SceneMgr();
+	for (int i = 0; i < Mgr->MAX_OBJECTS_COUNT; ++i) {
+		Mgr->ObjectAdd();
+	}
 
 	glutDisplayFunc(RenderScene);
 	glutIdleFunc(Idle);

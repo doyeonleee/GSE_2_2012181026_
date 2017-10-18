@@ -20,6 +20,9 @@ private:
 	float ObjectVolume;		//부피
 	float ObjectWeight;		//무게
 
+	float ObjectVectorX;
+	float ObjectVectorY;
+
 
 public:
 	// 생성자를 통해 도형마다 좌표값 및 색상값을 설정하도록 함.
@@ -41,6 +44,9 @@ public:
 		ObjectGreen = g;
 		ObjectBlue = b;
 		ObjectAlpha = a;
+
+		ObjectVectorX = 1;
+		ObjectVectorY = 0;
 	};
 
 
