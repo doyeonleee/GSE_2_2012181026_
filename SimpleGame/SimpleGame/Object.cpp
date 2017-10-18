@@ -1,10 +1,24 @@
-<<<<<<< HEAD
 #include "stdafx.h"
 #include "Object.h"
 
+void Object::ObjectInitialize(float x, float y, float z, float s, float r, float g, float b, float a)
+{
+	ObjectXposition = x;
+	ObjectYposition = y;
+	ObjectZposition = z;
+	ObjectSize = s;
+	ObjectRed = r;
+	ObjectGreen = g;
+	ObjectBlue = b;
+	ObjectAlpha = a;
+
+	ObjectVectorX = 1;
+	ObjectVectorY = 0;
+};
+
 float Object::GetObjectXposition() {
 	return ObjectXposition;
-};
+}
 float Object::GetObjectYposition() {
 	return ObjectYposition;
 };
@@ -28,21 +42,6 @@ float Object::GetObjectAlpha() {
 };
 
 void Object::Update() {
-	
-	//float UpdatedXposition = 0;
-	//float UpdatedYposition = 0;
-
-	//float SpeedVector;
-	//float time;
-
-	//SpeedVector = 0.1;
-	//time = 1;
-
-	//UpdatedXposition = ObjectXposition + (SpeedVector * time);
-	//UpdatedYposition = ObjectYposition + (SpeedVector * time);
-
-	//ObjectXposition = UpdatedXposition;
-	//ObjectYposition = UpdatedYposition;
 
 	float eTime = 0.1;
 	ObjectXposition = ObjectXposition + (ObjectVectorX * eTime);
@@ -54,55 +53,4 @@ void Object::Update() {
 	if (ObjectYposition < -250)
 		ObjectVectorX = -ObjectVectorX;
 
-=======
-#include "stdafx.h"
-#include "Object.h"
-
-float Object::GetObjectXposition() {
-	return ObjectXposition;
-};
-float Object::GetObjectYposition() {
-	return ObjectYposition;
-};
-float Object::GetObjectZposition() {
-	return ObjectZposition;
-};
-float Object::GetObjectSize() {
-	return ObjectSize;
-};
-float Object::GetObjectRed() {
-	return ObjectRed;
-};
-float Object::GetObjectGreen() {
-	return ObjectGreen;
-};
-float Object::GetObjectBlue() {
-	return ObjectBlue;
-};
-float Object::GetObjectAlpha() {
-	return ObjectAlpha;
-};
-
-void Object::Update() {
-	cout << "UpdateÈ£Ãâ" << endl;
-	
-	float UpdatedXposition = 0;
-	float UpdatedYposition = 0;
-
-	//float VectorX = Vector * cosX;
-	//float VectorY = Vector * cosY;
-	float SpeedVector;
-	float time;
-
-	SpeedVector = 0.1;
-	time = 1;
-
-	UpdatedXposition = ObjectXposition + (SpeedVector * time);
-	UpdatedYposition = ObjectYposition + (SpeedVector * time);
-
-	ObjectXposition = UpdatedXposition;
-	ObjectYposition = UpdatedYposition;
-
-
->>>>>>> 6a84965a4056b53bd2247954de2d6c6f5b64a4b9
 }

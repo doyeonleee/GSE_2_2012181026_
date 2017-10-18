@@ -1,7 +1,8 @@
 #pragma once
 
-#include "Object.h"
 #include "stdafx.h"
+#include "Object.h"
+
 class Object;
 
 class SceneMgr
