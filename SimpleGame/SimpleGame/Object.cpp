@@ -1,5 +1,16 @@
 #include "stdafx.h"
 #include "Object.h"
+//#include "SceneMgr.h"
+
+#include <random>
+#include <cstdlib>
+#include <ctime>
+#include <Windows.h>
+
+default_random_engine dre2;
+uniform_int_distribution<> ui2(-1, 1);
+
+
 
 void Object::ObjectInitialize(float x, float y, float z, float s, float r, float g, float b, float a)
 {
@@ -12,8 +23,13 @@ void Object::ObjectInitialize(float x, float y, float z, float s, float r, float
 	ObjectBlue = b;
 	ObjectAlpha = a;
 
-	ObjectVectorX = 1;
-	ObjectVectorY = 0;
+	srand((unsigned int)time(NULL));
+
+	ObjectVectorX = ui2(dre2);
+	ObjectVectorY = ui2(dre2);
+
+	srand(GetTickCount());
+
 };
 
 float Object::GetObjectXposition() {
@@ -50,7 +66,13 @@ void Object::Update() {
 	if (ObjectXposition > 250)
 		ObjectVectorX = -ObjectVectorX;
 
-	if (ObjectYposition < -250)
+	if (ObjectXposition < -250)
 		ObjectVectorX = -ObjectVectorX;
+
+	if (ObjectYposition > 250)
+		ObjectVectorY = -ObjectVectorY;
+
+	if (ObjectYposition < -250)
+		ObjectVectorY = -ObjectVectorY;
 
 }

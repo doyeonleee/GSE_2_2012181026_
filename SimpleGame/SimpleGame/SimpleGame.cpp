@@ -42,7 +42,7 @@ void RenderScene(void)
 	//);
 
 	for (int i = 0; i < Mgr->MAX_OBJECTS_COUNT; ++i) {
-		g_Renderer->DrawSolidRect(
+		Mgr->m_renderer->DrawSolidRect(
 			Mgr->m_objects[i]->GetObjectXposition(), 
 			Mgr->m_objects[i]->GetObjectYposition(),
 			Mgr->m_objects[i]->GetObjectZposition(),
@@ -115,16 +115,17 @@ int main(int argc, char **argv)
 	}
 
 	// Initialize Renderer
-	g_Renderer = new Renderer(500, 500);
-	if (!g_Renderer->IsInitialized())
-	{
-		std::cout << "Renderer could not be initialized.. \n";
-	}
+	//g_Renderer = new Renderer(500, 500);
+	//if (!g_Renderer->IsInitialized())
+	//{
+	//	std::cout << "Renderer could not be initialized.. \n";
+	//}
+	//Rect = new Object(0, 0, 0, 4, 1, 0, 1, 1);
 
-	Rect = new Object(0, 0, 0, 4, 1, 0, 1, 1);
 
 	//
-	Mgr = new SceneMgr();
+	Mgr = new SceneMgr(500, 500);
+
 	for (int i = 0; i < Mgr->MAX_OBJECTS_COUNT; ++i) {
 		Mgr->ObjectAdd();
 	}
@@ -137,7 +138,8 @@ int main(int argc, char **argv)
 
 	glutMainLoop();
 
-	delete g_Renderer;
+	//delete g_Renderer;
+	delete Mgr;
 
     return 0;
 }
