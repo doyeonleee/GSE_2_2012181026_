@@ -9,6 +9,8 @@ but WITHOUT ANY WARRANTY.
 */
 
 #include "stdafx.h"
+#include "windows.h"
+
 #include <iostream>
 #include "Dependencies\glew.h"
 #include "Dependencies\freeglut.h"
@@ -25,21 +27,30 @@ Object *Rect = NULL;
 
 SceneMgr *Mgr = NULL;
 
+DWORD g_prevTime = 0;
+
+bool g_LButtonDown = false;
+
+
 void RenderScene(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
 
+	DWORD currentTime = timeGetTime();
+	DWORD elapsedTime = currentTime - g_prevTime;
+	g_prevTime = currentTime;
+
+
 	// Renderer Test
-
 	//g_Renderer->DrawSolidRect(0, 0, 0, 4, 1, 0, 1, 1);
-
-
 	//g_Renderer->DrawSolidRect(
 	//	Rect->GetObjectXposition(), Rect->GetObjectYposition(), Rect->GetObjectZposition(),
 	//	Rect->GetObjectSize(), Rect->GetObjectRed(), Rect->GetObjectGreen(),
 	//	Rect->GetObjectBlue(), Rect->GetObjectAlpha()
 	//);
+
+	Mgr->SceneUpdate((float)elapsedTime);
 
 	for (int i = 0; i < Mgr->MAX_OBJECTS_COUNT; ++i) {
 		Mgr->m_renderer->DrawSolidRect(
@@ -64,23 +75,24 @@ void Idle(void)
 	
 	//Rect->Update();
 
-	Mgr->SceneUpdate();
-
+	//Mgr->SceneUpdate();
 }
 
 void MouseInput(int button, int state, int x, int y)
 {
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 	{
-		//g_LButtonDown = true;
+		g_LButtonDown = true;
 	}
 
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_UP)
 	{
-		//if(g_LButtonDown)
+		if(g_LButtonDown)
 		{
-
+			for (int i = 0; i < 1; i++)
+				Mgr->AddPlusObject(x-250, -y+250);
 		}
+		g_LButtonDown = false;
 	}
 	RenderScene();
 }
@@ -127,7 +139,7 @@ int main(int argc, char **argv)
 	Mgr = new SceneMgr(500, 500);
 
 	for (int i = 0; i < Mgr->MAX_OBJECTS_COUNT; ++i) {
-		Mgr->ObjectAdd();
+		Mgr->ObjectFirstAdd();
 	}
 
 	glutDisplayFunc(RenderScene);
@@ -137,6 +149,8 @@ int main(int argc, char **argv)
 	glutSpecialFunc(SpecialKeyInput);
 
 	glutMainLoop();
+
+	g_prevTime = timeGetTime();
 
 	//delete g_Renderer;
 	delete Mgr;

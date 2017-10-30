@@ -3,15 +3,19 @@
 #include "stdafx.h"
 #include "Object.h"
 #include "Renderer.h"
+#include "windows.h"
 
 class Object;
 class Renderer;
 
+
+
 class SceneMgr
 {
 public:
-	static const int MAX_OBJECTS_COUNT = 50;
-	Object *m_objects[MAX_OBJECTS_COUNT] = { 0 };
+	static const int MAX_OBJECTS_COUNT = 70;
+	Object *m_objects[MAX_OBJECTS_COUNT];
+	Object *m_Bullets[MAX_OBJECTS_COUNT];
 	Renderer *m_renderer = NULL;
 
 
@@ -22,10 +26,22 @@ public:
 		{
 			std::cout << "Renderer could not be initialized.. \n";
 		}
+		for (int i = 0; i < MAX_OBJECTS_COUNT; i++)
+		{
+			m_Bullets[i] = NULL;
+
+		}
+
 	}
 
-	void ObjectAdd();
-	void SceneUpdate();
+	void ObjectFirstAdd();
+	void SceneUpdate(float elapsedTime);
 
-	bool CollisionTest();
+	int AddPlusObject(float x, float y);
+	void DeleteObject(int i);
+
+	void CollisionTest();
+	bool BoxCollisionTest(float minX, float minY, float maxX, float maxY, float minX1, float minY1, float maxX1, float maxY1);
+
+	~SceneMgr() {};
 };

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Object.h"
-//#include "SceneMgr.h"
+#include "SceneMgr.h"
 
 #include <random>
 #include <cstdlib>
@@ -17,7 +17,9 @@ void Object::ObjectInitialize(float x, float y, float z, float s, float r, float
 	ObjectXposition = x;
 	ObjectYposition = y;
 	ObjectZposition = z;
+
 	ObjectSize = s;
+
 	ObjectRed = r;
 	ObjectGreen = g;
 	ObjectBlue = b;
@@ -27,6 +29,9 @@ void Object::ObjectInitialize(float x, float y, float z, float s, float r, float
 
 	ObjectVectorX = ui2(dre2);
 	ObjectVectorY = ui2(dre2);
+
+	Objectlife = 100.f;
+	ObjectlifeTime = 100000.f;
 
 	srand(GetTickCount());
 
@@ -57,9 +62,9 @@ float Object::GetObjectAlpha() {
 	return ObjectAlpha;
 };
 
-void Object::Update() {
+void Object::Update(float elapsedTime) {
 
-	float eTime = 0.1;
+	float eTime = elapsedTime / 1000.f;
 	ObjectXposition = ObjectXposition + (ObjectVectorX * eTime);
 	ObjectYposition = ObjectYposition + (ObjectVectorY * eTime);
 
@@ -74,5 +79,16 @@ void Object::Update() {
 
 	if (ObjectYposition < -250)
 		ObjectVectorY = -ObjectVectorY;
+
+	if (Objectlife > 0.f)
+	{
+		Objectlife -= 0.5f;
+	}
+
+	if (ObjectlifeTime > 0.f)
+	{
+		//		m_lifeTime -= elapsedTimeInSecond;
+	}
+
 
 }

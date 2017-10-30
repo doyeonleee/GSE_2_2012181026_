@@ -7,7 +7,7 @@ using namespace std;
 
 class Object {
 
-private:
+public:
 	float ObjectXposition;
 	float ObjectYposition;
 	float ObjectZposition;
@@ -24,6 +24,9 @@ private:
 
 	float ObjectVectorX;
 	float ObjectVectorY;
+
+	float Objectlife;
+	float ObjectlifeTime;
 
 
 public:
@@ -51,7 +54,7 @@ public:
 	float GetObjectAlpha();
 
 	//추가 함수부
-	void Update();
+	void Update(float elapsedTime);
 
 
 
