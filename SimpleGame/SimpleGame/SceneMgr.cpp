@@ -12,6 +12,7 @@ using namespace std;
 default_random_engine dre;
 uniform_int_distribution<> ui(-250 ,250);
 
+#define OBJECT_BUILDING 0
 
 void SceneMgr::ObjectFirstAdd()
 {
@@ -24,7 +25,23 @@ void SceneMgr::ObjectFirstAdd()
 	x = (rand() % 250) + 1;
 	y = (rand() % 250) + 1;
 	
-	for (int i = 0; i < MAX_OBJECTS_COUNT; ++i)
+	//OBJECT_BUILDING
+	m_objects[OBJECT_BUILDING] = new Object(0, 0, 0, 50, 1, 1, 1, 0);
+	m_objects[OBJECT_BUILDING]->ObjectInitialize(
+		m_objects[OBJECT_BUILDING]->GetObjectXposition(),
+		m_objects[OBJECT_BUILDING]->GetObjectYposition(),
+		m_objects[OBJECT_BUILDING]->GetObjectZposition(),
+		m_objects[OBJECT_BUILDING]->GetObjectSize(),
+		m_objects[OBJECT_BUILDING]->GetObjectRed(),
+		m_objects[OBJECT_BUILDING]->GetObjectGreen(),
+		m_objects[OBJECT_BUILDING]->GetObjectBlue(),
+		m_objects[OBJECT_BUILDING]->GetObjectAlpha()
+	);
+	m_objects[OBJECT_BUILDING]->ObjectVectorX = 0;
+	m_objects[OBJECT_BUILDING]->ObjectVectorY = 0;
+
+
+	for (int i = 1; i < MAX_OBJECTS_COUNT; ++i)
 	{
 		m_objects[i] = NULL;
 		if (m_objects[i] == NULL)
@@ -43,6 +60,8 @@ void SceneMgr::ObjectFirstAdd()
 			);
 		}
 	}
+
+
 	srand(GetTickCount());
 }
 
@@ -50,14 +69,21 @@ void SceneMgr::SceneUpdate(float elapsedTime)
 {
 	CollisionTest();
 
-	//float elapsedTime = 100.f;
-	float eT = 100.f;
 	for (int i = 0; i < MAX_OBJECTS_COUNT; i++)
 	{
 		if (m_objects[i] != NULL)
 		{
-
-			m_objects[i]->Update(eT);
+			m_objects[i]->Update((float)elapsedTime);
+			
+			if (m_objects[i]->GetObjectLife() < 0.0001f || m_objects[i]->GetObjectLifeTime() < 0.0001f)
+			{
+				delete m_objects[i];
+				m_objects[i] = NULL;
+			}
+			else
+			{
+				m_objects[i]->Update((float)elapsedTime);
+			}
 		}
 	}
 }

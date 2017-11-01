@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <Windows.h>
+#include <math.h>
 
 default_random_engine dre2;
 uniform_int_distribution<> ui2(-1, 1);
@@ -27,11 +28,11 @@ void Object::ObjectInitialize(float x, float y, float z, float s, float r, float
 
 	srand((unsigned int)time(NULL));
 
-	ObjectVectorX = ui2(dre2);
-	ObjectVectorY = ui2(dre2);
+	ObjectVectorX = 100*ui2(dre2);
+	ObjectVectorY = 100*ui2(dre2);
 
 	Objectlife = 100.f;
-	ObjectlifeTime = 100000.f;
+	ObjectlifeTime = 1000000.f;
 
 	srand(GetTickCount());
 
@@ -60,7 +61,16 @@ float Object::GetObjectBlue() {
 };
 float Object::GetObjectAlpha() {
 	return ObjectAlpha;
-};
+}
+float Object::GetObjectLife()
+{
+	return Objectlife;
+}
+float Object::GetObjectLifeTime()
+{
+	return ObjectlifeTime;
+}
+;
 
 void Object::Update(float elapsedTime) {
 
@@ -87,8 +97,7 @@ void Object::Update(float elapsedTime) {
 
 	if (ObjectlifeTime > 0.f)
 	{
-		//		m_lifeTime -= elapsedTimeInSecond;
+		ObjectlifeTime -= eTime;
 	}
-
 
 }

@@ -13,7 +13,7 @@ class Renderer;
 class SceneMgr
 {
 public:
-	static const int MAX_OBJECTS_COUNT = 70;
+	static const int MAX_OBJECTS_COUNT = 100;
 	Object *m_objects[MAX_OBJECTS_COUNT];
 	Object *m_Bullets[MAX_OBJECTS_COUNT];
 	Renderer *m_renderer = NULL;
@@ -29,9 +29,7 @@ public:
 		for (int i = 0; i < MAX_OBJECTS_COUNT; i++)
 		{
 			m_Bullets[i] = NULL;
-
 		}
-
 	}
 
 	void ObjectFirstAdd();

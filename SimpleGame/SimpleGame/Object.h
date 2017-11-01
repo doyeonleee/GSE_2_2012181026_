@@ -53,10 +53,11 @@ public:
 	float GetObjectBlue();
 	float GetObjectAlpha();
 
+	float GetObjectLife();
+	float GetObjectLifeTime();
+
 	//추가 함수부
 	void Update(float elapsedTime);
-
-
 
 	//소멸자
 	~Object() {};

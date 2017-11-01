@@ -20,13 +20,10 @@ but WITHOUT ANY WARRANTY.
 #include "SceneMgr.h"
 
 Renderer *g_Renderer = NULL;
-//ObjectManager Rect(0, 0, 0, 4, 1, 0, 1, 1);
-
 Object *Rect = NULL;
-//Object *Rect2 = NULL;
 
 SceneMgr *Mgr = NULL;
-
+DWORD elapsedTime = 0;
 DWORD g_prevTime = 0;
 
 bool g_LButtonDown = false;
@@ -38,17 +35,14 @@ void RenderScene(void)
 	glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
 
 	DWORD currentTime = timeGetTime();
+	cout << currentTime << endl;;
+	
 	DWORD elapsedTime = currentTime - g_prevTime;
+	cout << elapsedTime << endl;
+	
 	g_prevTime = currentTime;
+	cout << g_prevTime << endl;
 
-
-	// Renderer Test
-	//g_Renderer->DrawSolidRect(0, 0, 0, 4, 1, 0, 1, 1);
-	//g_Renderer->DrawSolidRect(
-	//	Rect->GetObjectXposition(), Rect->GetObjectYposition(), Rect->GetObjectZposition(),
-	//	Rect->GetObjectSize(), Rect->GetObjectRed(), Rect->GetObjectGreen(),
-	//	Rect->GetObjectBlue(), Rect->GetObjectAlpha()
-	//);
 
 	Mgr->SceneUpdate((float)elapsedTime);
 
@@ -73,9 +67,6 @@ void Idle(void)
 {
 	RenderScene();
 	
-	//Rect->Update();
-
-	//Mgr->SceneUpdate();
 }
 
 void MouseInput(int button, int state, int x, int y)
@@ -126,18 +117,9 @@ int main(int argc, char **argv)
 		std::cout << "GLEW 3.0 not supported\n ";
 	}
 
-	// Initialize Renderer
-	//g_Renderer = new Renderer(500, 500);
-	//if (!g_Renderer->IsInitialized())
-	//{
-	//	std::cout << "Renderer could not be initialized.. \n";
-	//}
-	//Rect = new Object(0, 0, 0, 4, 1, 0, 1, 1);
-
 
 	//
 	Mgr = new SceneMgr(500, 500);
-
 	for (int i = 0; i < Mgr->MAX_OBJECTS_COUNT; ++i) {
 		Mgr->ObjectFirstAdd();
 	}
@@ -148,9 +130,10 @@ int main(int argc, char **argv)
 	glutMouseFunc(MouseInput);
 	glutSpecialFunc(SpecialKeyInput);
 
-	glutMainLoop();
 
 	g_prevTime = timeGetTime();
+
+	glutMainLoop();
 
 	//delete g_Renderer;
 	delete Mgr;
