@@ -5,6 +5,7 @@
 
 using namespace std;
 
+
 class Object {
 
 public:
@@ -32,9 +33,8 @@ public:
 public:
 	// 생성자를 통해 도형마다 좌표값 및 색상값을 설정하도록 함.
 
-
 	//Rect
-	Object(float x, float y, float z, float s, float r, float g, float b, float a) {
+	Object(ObjectType type, float x, float y, float z, float s, float r, float g, float b, float a) {
 		ObjectInitialize(x, y, z, s, r, g, b, a);
 	}
 

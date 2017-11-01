@@ -28,11 +28,14 @@ void Object::ObjectInitialize(float x, float y, float z, float s, float r, float
 
 	srand((unsigned int)time(NULL));
 
-	ObjectVectorX = 100*ui2(dre2);
-	ObjectVectorY = 100*ui2(dre2);
+	ObjectVectorX = 100 * ui2(dre2);
+	ObjectVectorY = 100 * ui2(dre2);
 
+
+	
 	Objectlife = 100.f;
-	ObjectlifeTime = 1000000.f;
+	//랜덤(캐릭터나 빌딩 등..)으로 바꿔주면 된다.
+	ObjectlifeTime = 1000000000000000000000000000.f;
 
 	srand(GetTickCount());
 

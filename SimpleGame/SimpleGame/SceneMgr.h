@@ -13,7 +13,7 @@ class Renderer;
 class SceneMgr
 {
 public:
-	static const int MAX_OBJECTS_COUNT = 100;
+	static const int MAX_OBJECTS_COUNT = 11;
 	Object *m_objects[MAX_OBJECTS_COUNT];
 	Object *m_Bullets[MAX_OBJECTS_COUNT];
 	Renderer *m_renderer = NULL;

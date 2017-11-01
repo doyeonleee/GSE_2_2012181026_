@@ -47,17 +47,18 @@ void RenderScene(void)
 	Mgr->SceneUpdate((float)elapsedTime);
 
 	for (int i = 0; i < Mgr->MAX_OBJECTS_COUNT; ++i) {
-		Mgr->m_renderer->DrawSolidRect(
-			Mgr->m_objects[i]->GetObjectXposition(), 
-			Mgr->m_objects[i]->GetObjectYposition(),
-			Mgr->m_objects[i]->GetObjectZposition(),
-			Mgr->m_objects[i]->GetObjectSize(),
-			Mgr->m_objects[i]->GetObjectRed(),
-			Mgr->m_objects[i]->GetObjectGreen(),
-			Mgr->m_objects[i]->GetObjectBlue(),
-			Mgr->m_objects[i]->GetObjectAlpha()
-			
+		if (Mgr->m_objects[i] != NULL) {
+			Mgr->m_renderer->DrawSolidRect(
+				Mgr->m_objects[i]->GetObjectXposition(),
+				Mgr->m_objects[i]->GetObjectYposition(),
+				Mgr->m_objects[i]->GetObjectZposition(),
+				Mgr->m_objects[i]->GetObjectSize(),
+				Mgr->m_objects[i]->GetObjectRed(),
+				Mgr->m_objects[i]->GetObjectGreen(),
+				Mgr->m_objects[i]->GetObjectBlue(),
+				Mgr->m_objects[i]->GetObjectAlpha()
 			);
+		}
 	}
 
 	glutSwapBuffers();

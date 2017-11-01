@@ -12,8 +12,6 @@ using namespace std;
 default_random_engine dre;
 uniform_int_distribution<> ui(-250 ,250);
 
-#define OBJECT_BUILDING 0
-
 void SceneMgr::ObjectFirstAdd()
 {
 	unsigned int x = 0;
@@ -26,7 +24,7 @@ void SceneMgr::ObjectFirstAdd()
 	y = (rand() % 250) + 1;
 	
 	//OBJECT_BUILDING
-	m_objects[OBJECT_BUILDING] = new Object(0, 0, 0, 50, 1, 1, 1, 0);
+	m_objects[OBJECT_BUILDING] = new Object(OBJECT_BUILDING, 0, 0, 0, 50, 1, 1, 1, 0);
 	m_objects[OBJECT_BUILDING]->ObjectInitialize(
 		m_objects[OBJECT_BUILDING]->GetObjectXposition(),
 		m_objects[OBJECT_BUILDING]->GetObjectYposition(),
@@ -41,25 +39,26 @@ void SceneMgr::ObjectFirstAdd()
 	m_objects[OBJECT_BUILDING]->ObjectVectorY = 0;
 
 
-	for (int i = 1; i < MAX_OBJECTS_COUNT; ++i)
-	{
-		m_objects[i] = NULL;
-		if (m_objects[i] == NULL)
-		{
-			// x, y, z, s, r, g, b, a
-			m_objects[i] = new Object( ui(dre), ui(dre), 1, 7 , 1, 1, 1, 0);
-			m_objects[i]->ObjectInitialize(
-				m_objects[i]->GetObjectXposition(),
-				m_objects[i]->GetObjectYposition(),
-				m_objects[i]->GetObjectZposition(),
-				m_objects[i]->GetObjectSize(),
-				m_objects[i]->GetObjectRed(),
-				m_objects[i]->GetObjectGreen(),
-				m_objects[i]->GetObjectBlue(),
-				m_objects[i]->GetObjectAlpha()
-			);
-		}
-	}
+	//오브젝트 COUNT수 만큼 랜덤 생성
+	//for (int i = 1; i < MAX_OBJECTS_COUNT; ++i)
+	//{
+	//	m_objects[i] = NULL;
+	//	if (m_objects[i] == NULL)
+	//	{
+	//		// x, y, z, s, r, g, b, a
+	//		m_objects[i] = new Object( ui(dre), ui(dre), 1, 7 , 1, 1, 1, 0);
+	//		m_objects[i]->ObjectInitialize(
+	//			m_objects[i]->GetObjectXposition(),
+	//			m_objects[i]->GetObjectYposition(),
+	//			m_objects[i]->GetObjectZposition(),
+	//			m_objects[i]->GetObjectSize(),
+	//			m_objects[i]->GetObjectRed(),
+	//			m_objects[i]->GetObjectGreen(),
+	//			m_objects[i]->GetObjectBlue(),
+	//			m_objects[i]->GetObjectAlpha()
+	//		);
+	//	}
+	//}
 
 
 	srand(GetTickCount());
@@ -77,8 +76,9 @@ void SceneMgr::SceneUpdate(float elapsedTime)
 			
 			if (m_objects[i]->GetObjectLife() < 0.0001f || m_objects[i]->GetObjectLifeTime() < 0.0001f)
 			{
-				delete m_objects[i];
-				m_objects[i] = NULL;
+				//시간 경과후 오브젝트 삭제
+				//delete m_objects[i];
+				//m_objects[i] = NULL;
 			}
 			else
 			{
@@ -95,7 +95,7 @@ int SceneMgr::AddPlusObject(float x, float y)
 	{
 		if (m_objects[i] == NULL)
 		{
-			m_objects[i] = new Object(x, y, 1, 7, 1, 1, 1, 0);
+			m_objects[i] = new Object(OBJECT_CHARACTER,x, y, 1, 10, 1, 1, 1, 0);
 			return i;
 		}
 	}
@@ -129,7 +129,7 @@ void SceneMgr::CollisionTest()
 				if (i == j)
 					continue;
 
-				if (m_objects[i] != NULL)
+				if (m_objects[i] != NULL && m_objects[j] != NULL)
 				{
 					float minX, minY;
 					float maxX, maxY;
