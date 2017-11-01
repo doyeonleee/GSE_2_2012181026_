@@ -45,21 +45,22 @@ void RenderScene(void)
 
 
 	Mgr->SceneUpdate((float)elapsedTime);
+	Mgr->DrawObject();
 
-	for (int i = 0; i < Mgr->MAX_OBJECTS_COUNT; ++i) {
-		if (Mgr->m_objects[i] != NULL) {
-			Mgr->m_renderer->DrawSolidRect(
-				Mgr->m_objects[i]->GetObjectXposition(),
-				Mgr->m_objects[i]->GetObjectYposition(),
-				Mgr->m_objects[i]->GetObjectZposition(),
-				Mgr->m_objects[i]->GetObjectSize(),
-				Mgr->m_objects[i]->GetObjectRed(),
-				Mgr->m_objects[i]->GetObjectGreen(),
-				Mgr->m_objects[i]->GetObjectBlue(),
-				Mgr->m_objects[i]->GetObjectAlpha()
-			);
-		}
-	}
+	//for (int i = 0; i < Mgr->MAX_OBJECTS_COUNT; ++i) {
+	//	if (Mgr->m_objects[i] != NULL) {
+	//		Mgr->m_renderer->DrawSolidRect(
+	//			Mgr->m_objects[i]->GetObjectXposition(),
+	//			Mgr->m_objects[i]->GetObjectYposition(),
+	//			Mgr->m_objects[i]->GetObjectZposition(),
+	//			Mgr->m_objects[i]->GetObjectSize(),
+	//			Mgr->m_objects[i]->GetObjectRed(),
+	//			Mgr->m_objects[i]->GetObjectGreen(),
+	//			Mgr->m_objects[i]->GetObjectBlue(),
+	//			Mgr->m_objects[i]->GetObjectAlpha()
+	//		);
+	//	}
+	//}
 
 	glutSwapBuffers();
 }
@@ -121,10 +122,14 @@ int main(int argc, char **argv)
 
 	//
 	Mgr = new SceneMgr(500, 500);
-	for (int i = 0; i < Mgr->MAX_OBJECTS_COUNT; ++i) {
-		Mgr->ObjectFirstAdd();
-	}
 
+	//ºôµù »ý¼º
+	Mgr->ObjectFirstAdd();
+
+	//for (int i = 0; i < Mgr->MAX_OBJECTS_COUNT; ++i) {
+	//	Mgr->ObjectFirstAdd();
+	//}
+	
 	glutDisplayFunc(RenderScene);
 	glutIdleFunc(Idle);
 	glutKeyboardFunc(KeyInput);

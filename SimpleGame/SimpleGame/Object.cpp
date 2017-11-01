@@ -9,11 +9,10 @@
 #include <math.h>
 
 default_random_engine dre2;
-uniform_int_distribution<> ui2(-1, 1);
+uniform_int_distribution<> ui2(-100, 100);
 
 
-
-void Object::ObjectInitialize(float x, float y, float z, float s, float r, float g, float b, float a)
+void Object::ObjectInitialize(ObjectType type, float x, float y, float z, float s, float r, float g, float b, float a)
 {
 	ObjectXposition = x;
 	ObjectYposition = y;
@@ -28,12 +27,25 @@ void Object::ObjectInitialize(float x, float y, float z, float s, float r, float
 
 	srand((unsigned int)time(NULL));
 
-	ObjectVectorX = 100 * ui2(dre2);
-	ObjectVectorY = 100 * ui2(dre2);
+	//ObjectVectorX = float(100 * ui2(dre2));
+	//ObjectVectorY = float(100 * ui2(dre2));
 
+	ObjType = type;
 
-	
-	Objectlife = 100.f;
+	if (ObjType == OBJECT_BUILDING)
+	{
+		Objectlife = 500.f;
+		ObjectVectorX = 0;
+		ObjectVectorY = 0;
+	}
+
+	if (ObjType == OBJECT_CHARACTER)
+	{
+		Objectlife = 100.f;
+		ObjectVectorX = float(ui2(dre2));
+		ObjectVectorY = float(ui2(dre2));
+	}
+
 	//랜덤(캐릭터나 빌딩 등..)으로 바꿔주면 된다.
 	ObjectlifeTime = 1000000000000000000000000000.f;
 
@@ -73,7 +85,12 @@ float Object::GetObjectLifeTime()
 {
 	return ObjectlifeTime;
 }
-;
+
+ObjectType Object::GetObjectType()
+{
+	return ObjType;
+}
+
 
 void Object::Update(float elapsedTime) {
 
@@ -95,12 +112,12 @@ void Object::Update(float elapsedTime) {
 
 	if (Objectlife > 0.f)
 	{
-		Objectlife -= 0.5f;
+		//Objectlife -= 0.5f;
 	}
 
 	if (ObjectlifeTime > 0.f)
 	{
-		ObjectlifeTime -= eTime;
+		//ObjectlifeTime -= eTime;
 	}
 
 }

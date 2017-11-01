@@ -26,14 +26,15 @@ public:
 		{
 			std::cout << "Renderer could not be initialized.. \n";
 		}
-		for (int i = 0; i < MAX_OBJECTS_COUNT; i++)
-		{
-			m_Bullets[i] = NULL;
-		}
+		//for (int i = 0; i < MAX_OBJECTS_COUNT; i++)
+		//{
+		//	m_Bullets[i] = NULL;
+		//}
 	}
 
 	void ObjectFirstAdd();
 	void SceneUpdate(float elapsedTime);
+	void DrawObject();
 
 	int AddPlusObject(float x, float y);
 	void DeleteObject(int i);

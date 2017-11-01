@@ -14,18 +14,21 @@ uniform_int_distribution<> ui(-250 ,250);
 
 void SceneMgr::ObjectFirstAdd()
 {
-	unsigned int x = 0;
-	unsigned int y = 0;
-	srand((unsigned int)time(NULL));
-	
-	dre.seed(GetTickCount());
 
-	x = (rand() % 250) + 1;
-	y = (rand() % 250) + 1;
+	//unsigned int x = 0;
+	//unsigned int y = 0;
+	//srand((unsigned int)time(NULL));
+	//
+	//dre.seed(GetTickCount());
+
+	//x = (rand() % 250) + 1;
+	//y = (rand() % 250) + 1;
 	
+
 	//OBJECT_BUILDING
 	m_objects[OBJECT_BUILDING] = new Object(OBJECT_BUILDING, 0, 0, 0, 50, 1, 1, 1, 0);
 	m_objects[OBJECT_BUILDING]->ObjectInitialize(
+		m_objects[OBJECT_BUILDING]->GetObjectType(),
 		m_objects[OBJECT_BUILDING]->GetObjectXposition(),
 		m_objects[OBJECT_BUILDING]->GetObjectYposition(),
 		m_objects[OBJECT_BUILDING]->GetObjectZposition(),
@@ -35,9 +38,6 @@ void SceneMgr::ObjectFirstAdd()
 		m_objects[OBJECT_BUILDING]->GetObjectBlue(),
 		m_objects[OBJECT_BUILDING]->GetObjectAlpha()
 	);
-	m_objects[OBJECT_BUILDING]->ObjectVectorX = 0;
-	m_objects[OBJECT_BUILDING]->ObjectVectorY = 0;
-
 
 	//오브젝트 COUNT수 만큼 랜덤 생성
 	//for (int i = 1; i < MAX_OBJECTS_COUNT; ++i)
@@ -60,7 +60,6 @@ void SceneMgr::ObjectFirstAdd()
 	//	}
 	//}
 
-
 	srand(GetTickCount());
 }
 
@@ -74,9 +73,15 @@ void SceneMgr::SceneUpdate(float elapsedTime)
 		{
 			m_objects[i]->Update((float)elapsedTime);
 			
-			if (m_objects[i]->GetObjectLife() < 0.0001f || m_objects[i]->GetObjectLifeTime() < 0.0001f)
+			//if (m_objects[i]->GetObjectLife() < 0.0001f || m_objects[i]->GetObjectLifeTime() < 0.0001f)
+			//{
+			//	//시간 경과후 오브젝트 삭제
+			//	//delete m_objects[i];
+			//	//m_objects[i] = NULL;
+			//}
+
+			if (m_objects[i]->GetObjectLife() < 0.0001f )
 			{
-				//시간 경과후 오브젝트 삭제
 				//delete m_objects[i];
 				//m_objects[i] = NULL;
 			}
@@ -84,6 +89,24 @@ void SceneMgr::SceneUpdate(float elapsedTime)
 			{
 				m_objects[i]->Update((float)elapsedTime);
 			}
+		}
+	}
+}
+
+void SceneMgr::DrawObject()
+{
+	for (int i = 0; i < MAX_OBJECTS_COUNT; ++i) {
+		if (m_objects[i] != NULL) {
+			m_renderer->DrawSolidRect(
+				m_objects[i]->GetObjectXposition(),
+				m_objects[i]->GetObjectYposition(),
+				m_objects[i]->GetObjectZposition(),
+				m_objects[i]->GetObjectSize(),
+				m_objects[i]->GetObjectRed(),
+				m_objects[i]->GetObjectGreen(),
+				m_objects[i]->GetObjectBlue(),
+				m_objects[i]->GetObjectAlpha()
+			);
 		}
 	}
 }
@@ -131,12 +154,18 @@ void SceneMgr::CollisionTest()
 
 				if (m_objects[i] != NULL && m_objects[j] != NULL)
 				{
+					// 오브젝트 타입 검사
+					if (m_objects[i]->GetObjectType() == m_objects[j]->GetObjectType())
+					{
+						m_objects[i]->Objectlife = 0;
+						m_objects[j]->Objectlife = 0;
+					}
+
 					float minX, minY;
 					float maxX, maxY;
 
 					float minX1, minY1;
 					float maxX1, maxY1;
-
 					minX = m_objects[i]->ObjectXposition - m_objects[i]->ObjectSize / 2.f;
 					minY = m_objects[i]->ObjectYposition - m_objects[i]->ObjectSize / 2.f;
 					maxX = m_objects[i]->ObjectXposition + m_objects[i]->ObjectSize / 2.f;

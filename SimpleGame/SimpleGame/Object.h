@@ -29,17 +29,18 @@ public:
 	float Objectlife;
 	float ObjectlifeTime;
 
+	ObjectType ObjType;
 
 public:
 	// 생성자를 통해 도형마다 좌표값 및 색상값을 설정하도록 함.
 
 	//Rect
 	Object(ObjectType type, float x, float y, float z, float s, float r, float g, float b, float a) {
-		ObjectInitialize(x, y, z, s, r, g, b, a);
+		ObjectInitialize(type, x, y, z, s, r, g, b, a);
 	}
 
 	//초기화
-	void ObjectInitialize(float x, float y, float z, float s, float r, float g, float b, float a);
+	void ObjectInitialize(ObjectType type, float x, float y, float z, float s, float r, float g, float b, float a);
 
 	//Get함수부 
 	float GetObjectXposition();
@@ -56,6 +57,8 @@ public:
 	float GetObjectLife();
 	float GetObjectLifeTime();
 
+	ObjectType GetObjectType();
+	
 	//추가 함수부
 	void Update(float elapsedTime);
 
