@@ -93,6 +93,7 @@ void SceneMgr::SceneUpdate(float elapsedTime)
 	}
 }
 
+
 void SceneMgr::DrawObject()
 {
 	for (int i = 0; i < MAX_OBJECTS_COUNT; ++i) {

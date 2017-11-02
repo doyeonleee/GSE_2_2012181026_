@@ -35,14 +35,8 @@ void RenderScene(void)
 	glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
 
 	DWORD currentTime = timeGetTime();
-	cout << currentTime << endl;;
-	
 	DWORD elapsedTime = currentTime - g_prevTime;
-	cout << elapsedTime << endl;
-	
 	g_prevTime = currentTime;
-	cout << g_prevTime << endl;
-
 
 	Mgr->SceneUpdate((float)elapsedTime);
 	Mgr->DrawObject();
@@ -68,7 +62,6 @@ void RenderScene(void)
 void Idle(void)
 {
 	RenderScene();
-	
 }
 
 void MouseInput(int button, int state, int x, int y)
@@ -83,7 +76,7 @@ void MouseInput(int button, int state, int x, int y)
 		if(g_LButtonDown)
 		{
 			for (int i = 0; i < 1; i++)
-				Mgr->AddPlusObject(x-250, -y+250);
+				Mgr->AddPlusObject((float)x-250, (float)-y+250);
 		}
 		g_LButtonDown = false;
 	}
@@ -119,7 +112,6 @@ int main(int argc, char **argv)
 		std::cout << "GLEW 3.0 not supported\n ";
 	}
 
-
 	//
 	Mgr = new SceneMgr(500, 500);
 
@@ -135,7 +127,6 @@ int main(int argc, char **argv)
 	glutKeyboardFunc(KeyInput);
 	glutMouseFunc(MouseInput);
 	glutSpecialFunc(SpecialKeyInput);
-
 
 	g_prevTime = timeGetTime();
 

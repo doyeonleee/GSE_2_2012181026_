@@ -8,8 +8,6 @@
 class Object;
 class Renderer;
 
-
-
 class SceneMgr
 {
 public:

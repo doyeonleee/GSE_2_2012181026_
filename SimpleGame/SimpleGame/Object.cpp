@@ -11,7 +11,6 @@
 default_random_engine dre2;
 uniform_int_distribution<> ui2(-100, 100);
 
-
 void Object::ObjectInitialize(ObjectType type, float x, float y, float z, float s, float r, float g, float b, float a)
 {
 	ObjectXposition = x;
