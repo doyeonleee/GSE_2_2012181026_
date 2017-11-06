@@ -8,7 +8,7 @@ using namespace std;
 
 class Object {
 
-public:
+private:
 	float ObjectXposition;
 	float ObjectYposition;
 	float ObjectZposition;
@@ -57,6 +57,10 @@ public:
 
 	float GetObjectLife();
 	float GetObjectLifeTime();
+
+	void SetObjectLife(float life);
+	void ChangeObjectColor(float r, float g, float b, float a);
+	void ChangeObjectPosition(float x, float y, float z);
 
 	ObjectType GetObjectType();
 	

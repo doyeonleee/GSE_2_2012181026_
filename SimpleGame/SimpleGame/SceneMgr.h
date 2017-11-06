@@ -10,10 +10,12 @@ class Renderer;
 
 class SceneMgr
 {
-public:
+private:
 	static const int MAX_OBJECTS_COUNT = 11;
+	static const int MAX_BULLET_COUNT = 50;
+
 	Object *m_objects[MAX_OBJECTS_COUNT];
-	Object *m_Bullets[MAX_OBJECTS_COUNT];
+	Object *m_Bullets[MAX_BULLET_COUNT];
 	Renderer *m_renderer = NULL;
 
 
@@ -24,15 +26,17 @@ public:
 		{
 			std::cout << "Renderer could not be initialized.. \n";
 		}
-		//for (int i = 0; i < MAX_OBJECTS_COUNT; i++)
-		//{
-		//	m_Bullets[i] = NULL;
-		//}
+		for (int i = 0; i < MAX_BULLET_COUNT; i++)
+		{
+			m_Bullets[i] = NULL;
+		}
 	}
 
-	void ObjectFirstAdd();
+	void ObjectBulidingAdd();
 	void SceneUpdate(float elapsedTime);
 	void DrawObject();
+	void DrawBullet(float elapsedTime);
+
 
 	int AddPlusObject(float x, float y);
 	void DeleteObject(int i);

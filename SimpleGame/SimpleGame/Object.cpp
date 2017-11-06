@@ -11,6 +11,9 @@
 default_random_engine dre2;
 uniform_int_distribution<> ui2(-100, 100);
 
+default_random_engine dre3;
+uniform_int_distribution<> ui3(-100, 100);
+
 void Object::ObjectInitialize(ObjectType type, float x, float y, float z, float s, float r, float g, float b, float a)
 {
 	ObjectXposition = x;
@@ -43,6 +46,13 @@ void Object::ObjectInitialize(ObjectType type, float x, float y, float z, float 
 		Objectlife = 100.f;
 		ObjectVectorX = float(ui2(dre2));
 		ObjectVectorY = float(ui2(dre2));
+	}
+
+	if (ObjType == OBJECT_BULLET)
+	{
+		Objectlife = 10.f;
+		ObjectVectorX = float(ui3(dre3));
+		ObjectVectorY = float(ui3(dre3));
 	}
 
 	//랜덤(캐릭터나 빌딩 등..)으로 바꿔주면 된다.
@@ -83,6 +93,26 @@ float Object::GetObjectLife()
 float Object::GetObjectLifeTime()
 {
 	return ObjectlifeTime;
+}
+
+void Object::SetObjectLife(float life)
+{
+	Objectlife = life;
+}
+
+void Object::ChangeObjectColor(float r, float g, float b, float a)
+{
+	ObjectRed = r;
+	ObjectGreen = g;
+	ObjectBlue = b;
+	ObjectAlpha = a;
+}
+
+void Object::ChangeObjectPosition(float x, float y, float z)
+{
+	ObjectXposition = x;
+	ObjectYposition = y;
+	ObjectZposition = z;
 }
 
 ObjectType Object::GetObjectType()

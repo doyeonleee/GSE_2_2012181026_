@@ -40,6 +40,7 @@ void RenderScene(void)
 
 	Mgr->SceneUpdate((float)elapsedTime);
 	Mgr->DrawObject();
+	//Mgr->DrawBullet((float)elapsedTime);
 
 	//for (int i = 0; i < Mgr->MAX_OBJECTS_COUNT; ++i) {
 	//	if (Mgr->m_objects[i] != NULL) {
@@ -116,7 +117,8 @@ int main(int argc, char **argv)
 	Mgr = new SceneMgr(500, 500);
 
 	//ºôµù »ý¼º
-	Mgr->ObjectFirstAdd();
+	Mgr->ObjectBulidingAdd();
+
 
 	//for (int i = 0; i < Mgr->MAX_OBJECTS_COUNT; ++i) {
 	//	Mgr->ObjectFirstAdd();
