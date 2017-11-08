@@ -12,12 +12,13 @@ class SceneMgr
 {
 private:
 	static const int MAX_OBJECTS_COUNT = 11;
-	static const int MAX_BULLET_COUNT = 50;
+	static const int MAX_BULLET_COUNT = 10;
 
 	Object *m_objects[MAX_OBJECTS_COUNT];
 	Object *m_Bullets[MAX_BULLET_COUNT];
 	Renderer *m_renderer = NULL;
 
+	int m_BuildingID;
 
 public:
 	SceneMgr(int width, int height) {
@@ -25,10 +26,6 @@ public:
 		if (!m_renderer->IsInitialized())
 		{
 			std::cout << "Renderer could not be initialized.. \n";
-		}
-		for (int i = 0; i < MAX_BULLET_COUNT; i++)
-		{
-			m_Bullets[i] = NULL;
 		}
 	}
 
@@ -42,6 +39,7 @@ public:
 	void DeleteObject(int i);
 
 	void CollisionTest();
+	void BulletCollisionTest();
 	bool BoxCollisionTest(float minX, float minY, float maxX, float maxY, float minX1, float minY1, float maxX1, float maxY1);
 
 	~SceneMgr() {};

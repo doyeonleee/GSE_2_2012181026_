@@ -29,6 +29,9 @@ private:
 	float Objectlife;
 	float ObjectlifeTime;
 
+	float BulletDelay = 0;
+
+
 	ObjectType ObjType;
 
 public:
@@ -58,7 +61,11 @@ public:
 	float GetObjectLife();
 	float GetObjectLifeTime();
 
+	float GetBulletDelay();
+
 	void SetObjectLife(float life);
+	void SetBulletDelay(float time);
+
 	void ChangeObjectColor(float r, float g, float b, float a);
 	void ChangeObjectPosition(float x, float y, float z);
 

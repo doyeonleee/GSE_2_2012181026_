@@ -2,6 +2,7 @@
 #include "Object.h"
 #include "SceneMgr.h"
 #include "Renderer.h"
+#include "LoadPng.h"
 
 #include <random>
 #include <cstdlib>
@@ -24,7 +25,7 @@ void SceneMgr::ObjectBulidingAdd()
 	//y = (rand() % 250) + 1;
 
 	//OBJECT_BUILDING
-	m_objects[OBJECT_BUILDING] = new Object(OBJECT_BUILDING, 0, 0, 0, 50, 1, 0, 0, 1);
+	m_objects[OBJECT_BUILDING] = new Object(OBJECT_BUILDING, 0, 0, 0, 50, 0, 1, 0, 1);
 	m_objects[OBJECT_BUILDING]->ObjectInitialize(
 		m_objects[OBJECT_BUILDING]->GetObjectType(),
 		m_objects[OBJECT_BUILDING]->GetObjectXposition(),
@@ -36,6 +37,7 @@ void SceneMgr::ObjectBulidingAdd()
 		m_objects[OBJECT_BUILDING]->GetObjectBlue(),
 		m_objects[OBJECT_BUILDING]->GetObjectAlpha()
 	);
+	m_BuildingID = m_renderer->CreatePngTexture("./Resourse/Building.png");
 
 	//총알 COUNT수 만큼 랜덤 생성
 	//for (int i = 0; i < MAX_BULLET_COUNT; ++i)
@@ -84,6 +86,8 @@ void SceneMgr::SceneUpdate(float elapsedTime)
 {
 	CollisionTest();
 
+	BulletCollisionTest();
+
 	for (int i = 0; i < MAX_OBJECTS_COUNT; i++)
 	{
 		if (m_objects[i] != NULL)
@@ -113,7 +117,20 @@ void SceneMgr::SceneUpdate(float elapsedTime)
 
 void SceneMgr::DrawObject()
 {
-	for (int i = 0; i < MAX_OBJECTS_COUNT; ++i) {
+	m_renderer->DrawTexturedRect(
+		m_objects[OBJECT_BUILDING]->GetObjectXposition(),
+		m_objects[OBJECT_BUILDING]->GetObjectYposition(),
+		m_objects[OBJECT_BUILDING]->GetObjectZposition(),
+		m_objects[OBJECT_BUILDING]->GetObjectSize(),
+		m_objects[OBJECT_BUILDING]->GetObjectRed(),
+		m_objects[OBJECT_BUILDING]->GetObjectGreen(),
+		m_objects[OBJECT_BUILDING]->GetObjectBlue(),
+		m_objects[OBJECT_BUILDING]->GetObjectAlpha(),
+		m_BuildingID
+	);
+
+
+	for (int i = 1; i < MAX_OBJECTS_COUNT; ++i) {
 		if (m_objects[i] != NULL) {
 			m_renderer->DrawSolidRect(
 				m_objects[i]->GetObjectXposition(),
@@ -133,13 +150,20 @@ void SceneMgr::DrawObject()
 //?
 void SceneMgr::DrawBullet(float elapsedTime)
 {
+	/*for (int i = 0; i < MAX_BULLET_COUNT; i++)
+	{
+		m_Bullets[i] = NULL;
+	}*/
+
+	int bulletCount = 0;
+
 	//총알 COUNT수 만큼 생성
 	for (int i = 0; i < MAX_BULLET_COUNT; ++i)
 	{
 		m_Bullets[i] = NULL;
 		if (m_Bullets[i] == NULL)
 		{
-			m_Bullets[i] = new Object(OBJECT_BULLET, ui(dre), ui(dre), 0, 3, 1, 1, 1, 1);
+			m_Bullets[i] = new Object(OBJECT_BULLET, ui(dre), ui(dre), 0, 10, 1, 1, 1, 1);
 			m_Bullets[i]->ObjectInitialize(
 				m_Bullets[i]->GetObjectType(),
 				m_Bullets[i]->GetObjectXposition(),
@@ -154,24 +178,29 @@ void SceneMgr::DrawBullet(float elapsedTime)
 		}
 	}
 
-	if ((float)elapsedTime / (float)0.5f != 0 ) {
-		for (int i = 0; i < MAX_BULLET_COUNT; ++i) {
+	//if ((float)elapsedTime / (float)0.5f != 0 ) {
+		for (int i = 0; i < MAX_BULLET_COUNT; ++i) 
+		{
 			if (m_Bullets[i] != NULL) {
-				m_renderer->DrawSolidRect(
-					m_Bullets[i]->GetObjectXposition(),
-					m_Bullets[i]->GetObjectYposition(),
-					m_Bullets[i]->GetObjectZposition(),
-					m_Bullets[i]->GetObjectSize(),
-					m_Bullets[i]->GetObjectRed(),
-					m_Bullets[i]->GetObjectGreen(),
-					m_Bullets[i]->GetObjectBlue(),
-					m_Bullets[i]->GetObjectAlpha()
-				);
+				if (m_Bullets[i]->GetBulletDelay() > 0.5f) {
+					m_renderer->DrawSolidRect(
+						m_Bullets[i]->GetObjectXposition(),
+						m_Bullets[i]->GetObjectYposition(),
+						m_Bullets[i]->GetObjectZposition(),
+						m_Bullets[i]->GetObjectSize(),
+						m_Bullets[i]->GetObjectRed(),
+						m_Bullets[i]->GetObjectGreen(),
+						m_Bullets[i]->GetObjectBlue(),
+						m_Bullets[i]->GetObjectAlpha()
+					);
+				}
+				m_Bullets[i]->SetBulletDelay(0.0f);
 			}
 		}
-	}
+	//}
 }
 
+// 캐릭터 추가
 int SceneMgr::AddPlusObject(float x, float y)
 {
 	//Find empty slot
@@ -179,7 +208,7 @@ int SceneMgr::AddPlusObject(float x, float y)
 	{
 		if (m_objects[i] == NULL)
 		{
-			m_objects[i] = new Object(OBJECT_CHARACTER,x, y, 1, 10, 2, 2, 2, 1);
+			m_objects[i] = new Object(OBJECT_CHARACTER,x, y, 1, 30, 2, 2, 2, 1);
 			return i;
 		}
 	}
@@ -199,13 +228,17 @@ void SceneMgr::DeleteObject(int i)
 	}
 }
 
+
 void SceneMgr::CollisionTest()
 {
-	int collisionCount = 0;
+	int ObjectCollisionCount = 0;
+	//int BulletCollisionCount = 0;
 
 	for (int i = 0; i < MAX_OBJECTS_COUNT; i++)
 	{
-		collisionCount = 0;
+		ObjectCollisionCount = 0;
+		//BulletCollisionCount = 0;
+
 		if (m_objects[i] != NULL)
 		{
 			for (int j = 0; j < MAX_OBJECTS_COUNT; j++)
@@ -237,13 +270,65 @@ void SceneMgr::CollisionTest()
 					maxY1 = m_objects[j]->GetObjectYposition() + m_objects[j]->GetObjectSize() / 2.f;
 					if (BoxCollisionTest(minX, minY, maxX, maxY, minX1, minY1, maxX1, maxY1))
 					{
+						ObjectCollisionCount++;
+					}
+				}
+			}
+
+			if (ObjectCollisionCount > 0)
+			{
+				m_objects[i]->ChangeObjectColor(1, 0, 0, 1);
+			}
+			else
+			{
+				m_objects[i]->ChangeObjectColor(1, 1, 1, 1);
+			}
+
+		}
+	}
+}
+
+void SceneMgr::BulletCollisionTest()
+{
+	int collisionCount = 0;
+
+	for (int i = 0; i < MAX_OBJECTS_COUNT; i++)
+	{
+		collisionCount = 0;
+		if (m_objects[i] != NULL)
+		{
+			for (int j = 0; j < MAX_BULLET_COUNT; j++)
+			{
+				if (i == j)
+					continue;
+
+				if (m_objects[i] != NULL && m_Bullets[j] != NULL)
+				{
+					float minX, minY;
+					float maxX, maxY;
+
+					float minX1, minY1;
+					float maxX1, maxY1;
+					minX = m_objects[i]->GetObjectXposition() - m_objects[i]->GetObjectSize() / 2.f;
+					minY = m_objects[i]->GetObjectYposition() - m_objects[i]->GetObjectSize() / 2.f;
+					maxX = m_objects[i]->GetObjectXposition() + m_objects[i]->GetObjectSize() / 2.f;
+					maxY = m_objects[i]->GetObjectYposition() + m_objects[i]->GetObjectSize() / 2.f;
+					minX1 = m_Bullets[j]->GetObjectXposition() - m_Bullets[j]->GetObjectSize() / 2.f;
+					minY1 = m_Bullets[j]->GetObjectYposition() - m_Bullets[j]->GetObjectSize() / 2.f;
+					maxX1 = m_Bullets[j]->GetObjectXposition() + m_Bullets[j]->GetObjectSize() / 2.f;
+					maxY1 = m_Bullets[j]->GetObjectYposition() + m_Bullets[j]->GetObjectSize() / 2.f;
+					if (BoxCollisionTest(minX, minY, maxX, maxY, minX1, minY1, maxX1, maxY1))
+					{
 						collisionCount++;
+						delete m_Bullets[j];
+						m_Bullets[j] = NULL;
 					}
 				}
 			}
 			if (collisionCount > 0)
 			{
 				m_objects[i]->ChangeObjectColor(1, 0, 0, 1);
+				m_objects[i]->SetObjectLife(m_objects[i]->GetObjectLife() - 10);
 			}
 			else
 			{

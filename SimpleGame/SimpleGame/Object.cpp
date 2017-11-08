@@ -12,7 +12,7 @@ default_random_engine dre2;
 uniform_int_distribution<> ui2(-100, 100);
 
 default_random_engine dre3;
-uniform_int_distribution<> ui3(-100, 100);
+uniform_int_distribution<> ui3(-300, 300);
 
 void Object::ObjectInitialize(ObjectType type, float x, float y, float z, float s, float r, float g, float b, float a)
 {
@@ -36,6 +36,7 @@ void Object::ObjectInitialize(ObjectType type, float x, float y, float z, float 
 
 	if (ObjType == OBJECT_BUILDING)
 	{
+		//ChangeObjectColor(3, 0, 3, 1);
 		Objectlife = 500.f;
 		ObjectVectorX = 0;
 		ObjectVectorY = 0;
@@ -43,7 +44,7 @@ void Object::ObjectInitialize(ObjectType type, float x, float y, float z, float 
 
 	if (ObjType == OBJECT_CHARACTER)
 	{
-		Objectlife = 100.f;
+		Objectlife = 10.f;
 		ObjectVectorX = float(ui2(dre2));
 		ObjectVectorY = float(ui2(dre2));
 	}
@@ -56,7 +57,7 @@ void Object::ObjectInitialize(ObjectType type, float x, float y, float z, float 
 	}
 
 	//랜덤(캐릭터나 빌딩 등..)으로 바꿔주면 된다.
-	ObjectlifeTime = 1000000000000000000000000000.f;
+	ObjectlifeTime = 1000.f;
 
 	srand(GetTickCount());
 
@@ -95,9 +96,19 @@ float Object::GetObjectLifeTime()
 	return ObjectlifeTime;
 }
 
+float Object::GetBulletDelay()
+{
+	return BulletDelay;
+}
+
 void Object::SetObjectLife(float life)
 {
 	Objectlife = life;
+}
+
+void Object::SetBulletDelay(float time)
+{
+	BulletDelay = time;
 }
 
 void Object::ChangeObjectColor(float r, float g, float b, float a)
@@ -124,6 +135,8 @@ ObjectType Object::GetObjectType()
 void Object::Update(float elapsedTime) {
 
 	float eTime = elapsedTime / 1000.f;
+	BulletDelay += eTime;
+
 	ObjectXposition = ObjectXposition + (ObjectVectorX * eTime);
 	ObjectYposition = ObjectYposition + (ObjectVectorY * eTime);
 
@@ -141,12 +154,12 @@ void Object::Update(float elapsedTime) {
 
 	if (Objectlife > 0.f)
 	{
-		//Objectlife -= 0.5f;
+		Objectlife -= 0.5f;
 	}
 
 	if (ObjectlifeTime > 0.f)
 	{
-		//ObjectlifeTime -= eTime;
+		ObjectlifeTime -= eTime;
 	}
 
 }
