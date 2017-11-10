@@ -44,7 +44,7 @@ Object::Object(ObjectType type, float x, float y)
 	{
 		ChangeObjectColor(1, 1, 1, 1);
 		ObjectSize = 10;
-		Objectlife = 1000;
+		Objectlife = 10000;
 		ObjectlifeTime = 100000.f;
 		ObjectVectorX = float(ui2(dre2));
 		ObjectVectorY = float(ui2(dre2));
@@ -63,7 +63,7 @@ Object::Object(ObjectType type, float x, float y)
 	else if (ObjType == OBJECT_ARROW)
 	{
 		ChangeObjectColor(0, 0, 1, 1);
-		Objectlife = 3000;
+		Objectlife = 1000;
 		ObjectlifeTime = 100000.f;
 		ObjectSize = 2;
 		ObjectVectorX = float(ui4(dre4));

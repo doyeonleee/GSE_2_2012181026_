@@ -206,24 +206,25 @@ void SceneMgr::CollisionTest()
 						// Arrow와 캐릭터
 						else if ((m_objects[i]->GetObjectType() == OBJECT_ARROW) && (m_objects[j]->GetObjectType() == OBJECT_CHARACTER))
 						{
-							m_objects[j]->GetDamage(100);
-						}
-						else if ((m_objects[j]->GetObjectType() == OBJECT_ARROW) && (m_objects[i]->GetObjectType() == OBJECT_BULLET))
-						{
 							m_objects[j]->GetDamage(m_objects[i]->GetObjectLife());
 							m_objects[i]->SetObjLife(0.f);
+						}
+						else if ((m_objects[j]->GetObjectType() == OBJECT_ARROW) && (m_objects[i]->GetObjectType() == OBJECT_CHARACTER))
+						{
+							m_objects[i]->GetDamage(m_objects[i]->GetObjectLife());
+							m_objects[j]->SetObjLife(0.f);
 						}
 
 						// Arrow와 빌딩
 						else if ((m_objects[i]->GetObjectType() == OBJECT_ARROW) && (m_objects[j]->GetObjectType() == OBJECT_BUILDING))
 						{
-							m_objects[j]->GetDamage(100);
+							m_objects[j]->GetDamage(m_objects[i]->GetObjectLife());
 							m_objects[i]->SetObjLife(0.f);
 						}
 						else if ((m_objects[j]->GetObjectType() == OBJECT_ARROW) && (m_objects[i]->GetObjectType() == OBJECT_BUILDING))
 						{
-							m_objects[j]->GetDamage(m_objects[i]->GetObjectLife());
-							m_objects[i]->SetObjLife(0.f);
+							m_objects[i]->GetDamage(m_objects[j]->GetObjectLife());
+							m_objects[j]->SetObjLife(0.f);
 						}
 					}
 				}
