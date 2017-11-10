@@ -15,6 +15,7 @@ private:
 
 	Object *m_objects[MAX_OBJECTS_COUNT];
 	Object *m_Bullets[MAX_OBJECTS_COUNT];
+	Object *m_Arrows[MAX_OBJECTS_COUNT];
 	Renderer *m_renderer = NULL;
 
 	int m_BuildingID;

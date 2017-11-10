@@ -20,7 +20,6 @@ void SceneMgr::SceneUpdate(float elapsedTime)
 	{
 		if (m_objects[i] != NULL)
 		{
-			m_objects[i]->Update((float)elapsedTime);
 			if (m_objects[i]->GetObjectLife() < 0.0001f || m_objects[i]->GetObjectLifeTime() < 0.0001f)
 			{
 				//시간 경과후 오브젝트 삭제
@@ -29,6 +28,7 @@ void SceneMgr::SceneUpdate(float elapsedTime)
 			}
 			else
 			{
+				//빌딩 총알
 				m_objects[i]->Update((float)elapsedTime);
 				if (m_objects[i]->GetObjectType() == OBJECT_BUILDING)
 				{
@@ -45,11 +45,32 @@ void SceneMgr::SceneUpdate(float elapsedTime)
 						}
 					}
 				}
+
+				//캐릭터 총알
+				else if (m_objects[i]->GetObjectType() == OBJECT_CHARACTER)
+				{
+					if (m_objects[i]->ObjectLastArrow > 0.5f)
+					{
+						int arrowID = AddObject(
+							m_objects[i]->GetObjectXposition(),
+							m_objects[i]->GetObjectYposition(),
+							OBJECT_ARROW);
+						m_objects[i]->ObjectLastArrow = 0.f;
+						if (arrowID >= 0)
+						{
+							m_objects[arrowID]->ParentID = i;
+						}
+					}
+				}
 			}
 		}
 		if (m_Bullets[i] != NULL)
 		{
 			m_Bullets[i]->Update(elapsedTime);
+		}
+		if (m_Arrows[i] != NULL)
+		{
+			m_Arrows[i]->Update(elapsedTime);
 		}
 	}
 }

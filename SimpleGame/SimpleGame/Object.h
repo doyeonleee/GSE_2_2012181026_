@@ -26,7 +26,6 @@ private:
 	float Objectlife;
 	float ObjectlifeTime;
 
-
 	ObjectType ObjType;
 
 public:
@@ -64,6 +63,7 @@ public:
 	~Object() {};
 
 	float ObjectLastBullet;
+	float ObjectLastArrow;
 	int ParentID;
 
 };

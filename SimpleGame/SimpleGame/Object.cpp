@@ -14,6 +14,10 @@ uniform_int_distribution<> ui2(-100, 100);
 default_random_engine dre3;
 uniform_int_distribution<> ui3(-300, 300);
 
+default_random_engine dre4;
+uniform_int_distribution<> ui4(-600, 600);
+
+
 Object::Object(ObjectType type, float x, float y)
 {
 	ObjectXposition = x;
@@ -22,6 +26,7 @@ Object::Object(ObjectType type, float x, float y)
 	srand((unsigned int)time(NULL));
 
 	ObjectLastBullet = 0.f;
+	ObjectLastArrow = 0.f;
 	ParentID = -1;
 	
 	if (ObjType == OBJECT_BUILDING)
@@ -48,11 +53,21 @@ Object::Object(ObjectType type, float x, float y)
 	else if (ObjType == OBJECT_BULLET)
 	{
 		ChangeObjectColor(1, 0, 0, 1);
-		ObjectVectorX = float(ui3(dre3));
-		ObjectVectorY = float(ui3(dre3));
 		Objectlife = 2000;
 		ObjectlifeTime = 100000.f;
 		ObjectSize = 2;
+		ObjectVectorX = float(ui3(dre3));
+		ObjectVectorY = float(ui3(dre3));
+	}
+
+	else if (ObjType == OBJECT_ARROW)
+	{
+		ChangeObjectColor(0, 0, 1, 1);
+		Objectlife = 3000;
+		ObjectlifeTime = 100000.f;
+		ObjectSize = 2;
+		ObjectVectorX = float(ui4(dre4));
+		ObjectVectorY = float(ui4(dre4));
 	}
 
 	//랜덤(캐릭터나 빌딩 등..)으로 바꿔주면 된다.
@@ -129,12 +144,13 @@ void Object::Update(float elapsedTime) {
 
 	float eTime = elapsedTime / 1000.f;
 	ObjectLastBullet += eTime;
+	ObjectLastArrow += eTime;
 
 	ObjectXposition = ObjectXposition + (ObjectVectorX * eTime);
 	ObjectYposition = ObjectYposition + (ObjectVectorY * eTime);
 
 	if (ObjectXposition > 250) {
-		if (ObjType == OBJECT_BULLET)
+		if (ObjType == OBJECT_BULLET || ObjType == OBJECT_ARROW )
 		{
 			Objectlife = 0.f;
 		}
@@ -142,7 +158,7 @@ void Object::Update(float elapsedTime) {
 	}
 
 	if (ObjectXposition < -250) {
-		if (ObjType == OBJECT_BULLET)
+		if (ObjType == OBJECT_BULLET || ObjType == OBJECT_ARROW)
 		{
 			Objectlife = 0.f;
 		}
@@ -150,7 +166,7 @@ void Object::Update(float elapsedTime) {
 	}
 
 	if (ObjectYposition > 250) {
-		if (ObjType == OBJECT_BULLET)
+		if (ObjType == OBJECT_BULLET || ObjType == OBJECT_ARROW)
 		{
 			Objectlife = 0.f;
 		}
@@ -158,7 +174,7 @@ void Object::Update(float elapsedTime) {
 	}
 
 	if (ObjectYposition < -250) {
-		if (ObjType == OBJECT_BULLET)
+		if (ObjType == OBJECT_BULLET || ObjType == OBJECT_ARROW)
 		{
 			Objectlife = 0.f;
 		}
