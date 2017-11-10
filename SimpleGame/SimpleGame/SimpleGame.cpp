@@ -19,20 +19,18 @@ but WITHOUT ANY WARRANTY.
 #include "Object.h"
 #include "SceneMgr.h"
 
-Renderer *g_Renderer = NULL;
-Object *Rect = NULL;
-
 SceneMgr *Mgr = NULL;
-DWORD elapsedTime = 0;
+
 DWORD g_prevTime = 0;
 
 bool g_LButtonDown = false;
 
-
 void RenderScene(void)
 {
+	//ÀÜ»ó?
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
+	
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 	DWORD currentTime = timeGetTime();
 	DWORD elapsedTime = currentTime - g_prevTime;
@@ -40,22 +38,6 @@ void RenderScene(void)
 
 	Mgr->SceneUpdate((float)elapsedTime);
 	Mgr->DrawObject();
-	Mgr->DrawBullet((float)elapsedTime);
-
-	//for (int i = 0; i < Mgr->MAX_OBJECTS_COUNT; ++i) {
-	//	if (Mgr->m_objects[i] != NULL) {
-	//		Mgr->m_renderer->DrawSolidRect(
-	//			Mgr->m_objects[i]->GetObjectXposition(),
-	//			Mgr->m_objects[i]->GetObjectYposition(),
-	//			Mgr->m_objects[i]->GetObjectZposition(),
-	//			Mgr->m_objects[i]->GetObjectSize(),
-	//			Mgr->m_objects[i]->GetObjectRed(),
-	//			Mgr->m_objects[i]->GetObjectGreen(),
-	//			Mgr->m_objects[i]->GetObjectBlue(),
-	//			Mgr->m_objects[i]->GetObjectAlpha()
-	//		);
-	//	}
-	//}
 
 	glutSwapBuffers();
 }
@@ -76,8 +58,9 @@ void MouseInput(int button, int state, int x, int y)
 	{
 		if(g_LButtonDown)
 		{
-			for (int i = 0; i < 1; i++)
-				Mgr->AddPlusObject((float)x-250, (float)-y+250);
+			for (int i = 0; i < 1; i++) {
+				Mgr->AddObject((float)x - 250, (float)-y + 250, OBJECT_CHARACTER);
+			}
 		}
 		g_LButtonDown = false;
 	}
@@ -113,22 +96,16 @@ int main(int argc, char **argv)
 		std::cout << "GLEW 3.0 not supported\n ";
 	}
 
-	//
-	Mgr = new SceneMgr(500, 500);
-
-	//ºôµù »ý¼º
-	Mgr->ObjectBulidingAdd();
-
-
-	//for (int i = 0; i < Mgr->MAX_OBJECTS_COUNT; ++i) {
-	//	Mgr->ObjectFirstAdd();
-	//}
 	
 	glutDisplayFunc(RenderScene);
 	glutIdleFunc(Idle);
 	glutKeyboardFunc(KeyInput);
 	glutMouseFunc(MouseInput);
 	glutSpecialFunc(SpecialKeyInput);
+
+	//
+	Mgr = new SceneMgr(500, 500);
+	Mgr->AddObject(0, 0, OBJECT_BUILDING);
 
 	g_prevTime = timeGetTime();
 

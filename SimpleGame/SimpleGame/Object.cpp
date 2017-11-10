@@ -14,54 +14,52 @@ uniform_int_distribution<> ui2(-100, 100);
 default_random_engine dre3;
 uniform_int_distribution<> ui3(-300, 300);
 
-void Object::ObjectInitialize(ObjectType type, float x, float y, float z, float s, float r, float g, float b, float a)
+Object::Object(ObjectType type, float x, float y)
 {
 	ObjectXposition = x;
 	ObjectYposition = y;
-	ObjectZposition = z;
-
-	ObjectSize = s;
-
-	ObjectRed = r;
-	ObjectGreen = g;
-	ObjectBlue = b;
-	ObjectAlpha = a;
-
+	ObjType = type;
 	srand((unsigned int)time(NULL));
 
-	//ObjectVectorX = float(100 * ui2(dre2));
-	//ObjectVectorY = float(100 * ui2(dre2));
-
-	ObjType = type;
-
+	ObjectLastBullet = 0.f;
+	ParentID = -1;
+	
 	if (ObjType == OBJECT_BUILDING)
 	{
-		//ChangeObjectColor(3, 0, 3, 1);
+		ChangeObjectColor(1, 1, 0, 1);
 		Objectlife = 500.f;
 		ObjectVectorX = 0;
 		ObjectVectorY = 0;
+		ObjectSize = 50;
+		Objectlife = 50000;
+		ObjectlifeTime = 100000.f;
 	}
 
-	if (ObjType == OBJECT_CHARACTER)
+	else if (ObjType == OBJECT_CHARACTER)
 	{
-		Objectlife = 10.f;
+		ChangeObjectColor(1, 1, 1, 1);
+		ObjectSize = 10;
+		Objectlife = 1000;
+		ObjectlifeTime = 100000.f;
 		ObjectVectorX = float(ui2(dre2));
 		ObjectVectorY = float(ui2(dre2));
 	}
 
-	if (ObjType == OBJECT_BULLET)
+	else if (ObjType == OBJECT_BULLET)
 	{
-		Objectlife = 10.f;
+		ChangeObjectColor(1, 0, 0, 1);
 		ObjectVectorX = float(ui3(dre3));
 		ObjectVectorY = float(ui3(dre3));
+		Objectlife = 2000;
+		ObjectlifeTime = 100000.f;
+		ObjectSize = 2;
 	}
 
 	//랜덤(캐릭터나 빌딩 등..)으로 바꿔주면 된다.
-	ObjectlifeTime = 1000.f;
 
 	srand(GetTickCount());
 
-};
+}
 
 float Object::GetObjectXposition() {
 	return ObjectXposition;
@@ -96,19 +94,14 @@ float Object::GetObjectLifeTime()
 	return ObjectlifeTime;
 }
 
-float Object::GetBulletDelay()
+void Object::GetDamage(float dmg)
 {
-	return BulletDelay;
+	Objectlife -= dmg;
 }
 
-void Object::SetObjectLife(float life)
+void Object::SetObjLife(float life)
 {
 	Objectlife = life;
-}
-
-void Object::SetBulletDelay(float time)
-{
-	BulletDelay = time;
 }
 
 void Object::ChangeObjectColor(float r, float g, float b, float a)
@@ -135,31 +128,52 @@ ObjectType Object::GetObjectType()
 void Object::Update(float elapsedTime) {
 
 	float eTime = elapsedTime / 1000.f;
-	BulletDelay += eTime;
+	ObjectLastBullet += eTime;
 
 	ObjectXposition = ObjectXposition + (ObjectVectorX * eTime);
 	ObjectYposition = ObjectYposition + (ObjectVectorY * eTime);
 
-	if (ObjectXposition > 250)
+	if (ObjectXposition > 250) {
+		if (ObjType == OBJECT_BULLET)
+		{
+			Objectlife = 0.f;
+		}
 		ObjectVectorX = -ObjectVectorX;
+	}
 
-	if (ObjectXposition < -250)
+	if (ObjectXposition < -250) {
+		if (ObjType == OBJECT_BULLET)
+		{
+			Objectlife = 0.f;
+		}
 		ObjectVectorX = -ObjectVectorX;
+	}
 
-	if (ObjectYposition > 250)
+	if (ObjectYposition > 250) {
+		if (ObjType == OBJECT_BULLET)
+		{
+			Objectlife = 0.f;
+		}
 		ObjectVectorY = -ObjectVectorY;
+	}
 
-	if (ObjectYposition < -250)
+	if (ObjectYposition < -250) {
+		if (ObjType == OBJECT_BULLET)
+		{
+			Objectlife = 0.f;
+		}
 		ObjectVectorY = -ObjectVectorY;
+	}
 
 	if (Objectlife > 0.f)
 	{
-		Objectlife -= 0.5f;
+		if (ObjType != OBJECT_BUILDING) {
+			//Objectlife -= 0.5f;
+		}
 	}
 
 	if (ObjectlifeTime > 0.f)
 	{
-		ObjectlifeTime -= eTime;
+		//ObjectlifeTime -= eTime;
 	}
-
 }

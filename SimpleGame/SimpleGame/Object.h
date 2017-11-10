@@ -20,31 +20,19 @@ private:
 	float ObjectBlue;
 	float ObjectAlpha;
 
-	float ObjectVolume;		//부피
-	float ObjectWeight;		//무게
-
 	float ObjectVectorX;
 	float ObjectVectorY;
 
 	float Objectlife;
 	float ObjectlifeTime;
 
-	float BulletDelay = 0;
-
 
 	ObjectType ObjType;
 
 public:
-	// 생성자를 통해 도형마다 좌표값 및 색상값을 설정하도록 함.
+	
+	Object(ObjectType type, float x, float y);
 
-
-	//Rect
-	Object(ObjectType type, float x, float y, float z, float s, float r, float g, float b, float a) {
-		ObjectInitialize(type, x, y, z, s, r, g, b, a);
-	}
-
-	//초기화
-	void ObjectInitialize(ObjectType type, float x, float y, float z, float s, float r, float g, float b, float a);
 
 	//Get함수부 
 	float GetObjectXposition();
@@ -61,10 +49,8 @@ public:
 	float GetObjectLife();
 	float GetObjectLifeTime();
 
-	float GetBulletDelay();
-
-	void SetObjectLife(float life);
-	void SetBulletDelay(float time);
+	void GetDamage(float dmg);
+	void SetObjLife(float life);
 
 	void ChangeObjectColor(float r, float g, float b, float a);
 	void ChangeObjectPosition(float x, float y, float z);
@@ -76,5 +62,8 @@ public:
 
 	//소멸자
 	~Object() {};
+
+	float ObjectLastBullet;
+	int ParentID;
 
 };
