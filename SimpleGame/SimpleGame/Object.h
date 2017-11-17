@@ -60,7 +60,13 @@ public:
 	void Update(float elapsedTime);
 
 	//¼Ò¸êÀÚ
-	~Object() {};
+	~Object()
+	{
+		if (ObjType == OBJECT_CHARACTER)
+		{
+			cout << "error" << endl;
+		}
+	};
 
 	float ObjectLastBullet;
 	float ObjectLastArrow;

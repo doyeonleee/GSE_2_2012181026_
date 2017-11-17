@@ -20,49 +20,49 @@ void SceneMgr::SceneUpdate(float elapsedTime)
 	{
 		if (m_objects[i] != NULL)
 		{
+			m_objects[i]->Update((float)elapsedTime);
 			if (m_objects[i]->GetObjectLife() < 0.0001f || m_objects[i]->GetObjectLifeTime() < 0.0001f)
 			{
 				//시간 경과후 오브젝트 삭제
 				delete m_objects[i];
 				m_objects[i] = NULL;
 			}
-			else
+
+			// 총알 발사
+			else if (m_objects[i]->GetObjectType() == OBJECT_BUILDING)
 			{
-				//빌딩 총알
-				m_objects[i]->Update((float)elapsedTime);
-				if (m_objects[i]->GetObjectType() == OBJECT_BUILDING)
+				if (m_objects[i]->ObjectLastBullet > 1.0f)
 				{
-					if (m_objects[i]->ObjectLastBullet > 0.5f)
+					int bulletID = AddObject(
+						m_objects[i]->GetObjectXposition(),
+						m_objects[i]->GetObjectYposition(),
+						OBJECT_BULLET);
+					m_objects[i]->ObjectLastBullet = 0.f;
+					if (bulletID >= 0)
 					{
-						int bulletID = AddObject(
-							m_objects[i]->GetObjectXposition(),
-							m_objects[i]->GetObjectYposition(),
-							OBJECT_BULLET);
-						m_objects[i]->ObjectLastBullet = 0.f;
-						if (bulletID >= 0)
-						{
-							m_objects[bulletID]->ParentID = i;
-						}
+					m_objects[bulletID]->ParentID = i;
 					}
 				}
-
-				//캐릭터 총알
-				else if (m_objects[i]->GetObjectType() == OBJECT_CHARACTER)
+				m_objects[i]->Update((float)elapsedTime);
+			}
+			else if (m_objects[i]->GetObjectType() == OBJECT_CHARACTER)
+			{
+				m_objects[i]->Update((float)elapsedTime);
+				if (m_objects[i]->ObjectLastArrow > 0.5f)
 				{
-					if (m_objects[i]->ObjectLastArrow > 0.5f)
+					int arrowID = AddObject(
+						m_objects[i]->GetObjectXposition(),
+						m_objects[i]->GetObjectYposition(),
+						OBJECT_ARROW);
+					m_objects[i]->ObjectLastArrow = 0.f;
+					if (arrowID >= 0)
 					{
-						int arrowID = AddObject(
-							m_objects[i]->GetObjectXposition(),
-							m_objects[i]->GetObjectYposition(),
-							OBJECT_ARROW);
-						m_objects[i]->ObjectLastArrow = 0.f;
-						if (arrowID >= 0)
-						{
-							m_objects[arrowID]->ParentID = i;
-						}
+					m_objects[arrowID]->ParentID = i;
 					}
 				}
 			}
+			else
+				m_objects[i]->Update((float)elapsedTime);
 		}
 		if (m_Bullets[i] != NULL)
 		{
@@ -180,7 +180,7 @@ void SceneMgr::CollisionTest()
 						else if ((m_objects[j]->GetObjectType() == OBJECT_BUILDING)	&& (m_objects[i]->GetObjectType() == OBJECT_CHARACTER))
 						{
 							m_objects[i]->GetDamage(m_objects[j]->GetObjectLife());
-							m_objects[j]->SetObjLife(0.f);
+							//m_objects[j]->SetObjLife(0.f);
 							ObjectCollisionCount++;
 						}
 
@@ -189,30 +189,28 @@ void SceneMgr::CollisionTest()
 						{
 							m_objects[i]->GetDamage(m_objects[j]->GetObjectLife());
 							m_objects[j]->SetObjLife(0.f);
+							ObjectCollisionCount++;
 						}
 						else if ((m_objects[j]->GetObjectType() == OBJECT_CHARACTER) &&	(m_objects[i]->GetObjectType() == OBJECT_BULLET))
 						{
 							m_objects[j]->GetDamage(m_objects[i]->GetObjectLife());
 							m_objects[i]->SetObjLife(0.f);
+							ObjectCollisionCount++;
 						}
 
-						//캐릭터와 캐릭터
-						else if ((m_objects[i]->GetObjectType() == OBJECT_CHARACTER) && (m_objects[j]->GetObjectType() == OBJECT_CHARACTER))
-						{
-							m_objects[i]->SetObjLife(0.f);
-							m_objects[j]->SetObjLife(0.f);
-						}
 						
 						// Arrow와 캐릭터
 						else if ((m_objects[i]->GetObjectType() == OBJECT_ARROW) && (m_objects[j]->GetObjectType() == OBJECT_CHARACTER))
 						{
 							m_objects[j]->GetDamage(m_objects[i]->GetObjectLife());
 							m_objects[i]->SetObjLife(0.f);
+							ObjectCollisionCount++;
 						}
 						else if ((m_objects[j]->GetObjectType() == OBJECT_ARROW) && (m_objects[i]->GetObjectType() == OBJECT_CHARACTER))
 						{
 							m_objects[i]->GetDamage(m_objects[i]->GetObjectLife());
 							m_objects[j]->SetObjLife(0.f);
+							ObjectCollisionCount++;
 						}
 
 						// Arrow와 빌딩
@@ -220,11 +218,13 @@ void SceneMgr::CollisionTest()
 						{
 							m_objects[j]->GetDamage(m_objects[i]->GetObjectLife());
 							m_objects[i]->SetObjLife(0.f);
+							ObjectCollisionCount++;
 						}
 						else if ((m_objects[j]->GetObjectType() == OBJECT_ARROW) && (m_objects[i]->GetObjectType() == OBJECT_BUILDING))
 						{
 							m_objects[i]->GetDamage(m_objects[j]->GetObjectLife());
 							m_objects[j]->SetObjLife(0.f);
+							ObjectCollisionCount++;
 						}
 					}
 				}

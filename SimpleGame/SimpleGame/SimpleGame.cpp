@@ -36,6 +36,8 @@ void RenderScene(void)
 	DWORD elapsedTime = currentTime - g_prevTime;
 	g_prevTime = currentTime;
 
+	//cout << elapsedTime << endl;
+
 	Mgr->SceneUpdate((float)elapsedTime);
 	Mgr->DrawObject();
 
@@ -59,7 +61,7 @@ void MouseInput(int button, int state, int x, int y)
 		if(g_LButtonDown)
 		{
 			for (int i = 0; i < 1; i++) {
-				Mgr->AddObject((float)x - 250, (float)-y + 250, OBJECT_CHARACTER);
+				Mgr->AddObject((float)x - 250, (float)-y + 500, OBJECT_CHARACTER);
 			}
 		}
 		g_LButtonDown = false;
@@ -83,7 +85,7 @@ int main(int argc, char **argv)
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(0, 0);
-	glutInitWindowSize(500, 500);
+	glutInitWindowSize(500, 1000);
 	glutCreateWindow("Game Software Engineering KPU");
 
 	glewInit();
@@ -104,11 +106,11 @@ int main(int argc, char **argv)
 	glutSpecialFunc(SpecialKeyInput);
 
 	//
-	Mgr = new SceneMgr(500, 500);
+	Mgr = new SceneMgr(500, 1000);
 	Mgr->AddObject(0, 0, OBJECT_BUILDING);
 
 	g_prevTime = timeGetTime();
-
+	
 	glutMainLoop();
 
 	//delete g_Renderer;

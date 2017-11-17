@@ -35,8 +35,8 @@ Object::Object(ObjectType type, float x, float y)
 		Objectlife = 500.f;
 		ObjectVectorX = 0;
 		ObjectVectorY = 0;
-		ObjectSize = 50;
-		Objectlife = 50000;
+		ObjectSize = 100;
+		Objectlife = 500;
 		ObjectlifeTime = 100000.f;
 	}
 
@@ -44,8 +44,8 @@ Object::Object(ObjectType type, float x, float y)
 	{
 		ChangeObjectColor(1, 1, 1, 1);
 		ObjectSize = 10;
-		Objectlife = 10000;
-		ObjectlifeTime = 100000.f;
+		Objectlife = 100;
+		ObjectlifeTime = 1000000.f;
 		ObjectVectorX = float(ui2(dre2));
 		ObjectVectorY = float(ui2(dre2));
 	}
@@ -53,8 +53,8 @@ Object::Object(ObjectType type, float x, float y)
 	else if (ObjType == OBJECT_BULLET)
 	{
 		ChangeObjectColor(1, 0, 0, 1);
-		Objectlife = 2000;
-		ObjectlifeTime = 100000.f;
+		Objectlife = 200;
+		ObjectlifeTime = 1000000.f;
 		ObjectSize = 2;
 		ObjectVectorX = float(ui3(dre3));
 		ObjectVectorY = float(ui3(dre3));
@@ -63,7 +63,7 @@ Object::Object(ObjectType type, float x, float y)
 	else if (ObjType == OBJECT_ARROW)
 	{
 		ChangeObjectColor(0, 0, 1, 1);
-		Objectlife = 1000;
+		Objectlife = 100;
 		ObjectlifeTime = 100000.f;
 		ObjectSize = 2;
 		ObjectVectorX = float(ui4(dre4));
@@ -165,7 +165,7 @@ void Object::Update(float elapsedTime) {
 		ObjectVectorX = -ObjectVectorX;
 	}
 
-	if (ObjectYposition > 250) {
+	if (ObjectYposition > 500) {
 		if (ObjType == OBJECT_BULLET || ObjType == OBJECT_ARROW)
 		{
 			Objectlife = 0.f;
@@ -173,7 +173,7 @@ void Object::Update(float elapsedTime) {
 		ObjectVectorY = -ObjectVectorY;
 	}
 
-	if (ObjectYposition < -250) {
+	if (ObjectYposition < -500) {
 		if (ObjType == OBJECT_BULLET || ObjType == OBJECT_ARROW)
 		{
 			Objectlife = 0.f;

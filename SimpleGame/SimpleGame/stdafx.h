@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <tchar.h>
+#pragma comment(lib, "winmm.lib")
 
 enum ObjectType {
 	OBJECT_BUILDING,
