@@ -31,23 +31,25 @@ Object::Object(ObjectType type, float x, float y)
 	
 	if (ObjType == OBJECT_BUILDING)
 	{
-		ChangeObjectColor(1, 1, 0, 1);
+		ChangeObjectColor(1, 0, 0, 1);
 		Objectlife = 500.f;
 		ObjectVectorX = 0;
 		ObjectVectorY = 0;
 		ObjectSize = 100;
 		Objectlife = 500;
 		ObjectlifeTime = 100000.f;
+		ObjectLevel = 0.1f;
 	}
 
 	else if (ObjType == OBJECT_CHARACTER)
 	{
-		ChangeObjectColor(1, 1, 1, 1);
-		ObjectSize = 10;
+		ChangeObjectColor(0, 0, 1, 1);
+		ObjectSize = 30;
 		Objectlife = 100;
 		ObjectlifeTime = 1000000.f;
 		ObjectVectorX = float(ui2(dre2));
 		ObjectVectorY = float(ui2(dre2));
+		ObjectLevel = 0.2f;
 	}
 
 	else if (ObjType == OBJECT_BULLET)
@@ -58,6 +60,7 @@ Object::Object(ObjectType type, float x, float y)
 		ObjectSize = 2;
 		ObjectVectorX = float(ui3(dre3));
 		ObjectVectorY = float(ui3(dre3));
+		ObjectLevel = 0.3f;
 	}
 
 	else if (ObjType == OBJECT_ARROW)
@@ -68,6 +71,7 @@ Object::Object(ObjectType type, float x, float y)
 		ObjectSize = 2;
 		ObjectVectorX = float(ui4(dre4));
 		ObjectVectorY = float(ui4(dre4));
+		ObjectLevel = 0.3f;
 	}
 
 	//랜덤(캐릭터나 빌딩 등..)으로 바꿔주면 된다.
@@ -137,6 +141,11 @@ void Object::ChangeObjectPosition(float x, float y, float z)
 ObjectType Object::GetObjectType()
 {
 	return ObjType;
+}
+
+float Object::GetObjectLevel()
+{
+	return ObjectLevel;
 }
 
 

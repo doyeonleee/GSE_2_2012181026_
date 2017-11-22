@@ -106,7 +106,8 @@ void SceneMgr::DrawObject()
 					m_objects[i]->GetObjectRed(),
 					m_objects[i]->GetObjectGreen(),
 					m_objects[i]->GetObjectBlue(),
-					m_objects[i]->GetObjectAlpha()
+					m_objects[i]->GetObjectAlpha(),
+					//m_objects[i]->GetObjectLevel()
 				);
 			}
 		}

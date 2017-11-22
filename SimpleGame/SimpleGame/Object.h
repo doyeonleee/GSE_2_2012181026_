@@ -25,6 +25,7 @@ private:
 
 	float Objectlife;
 	float ObjectlifeTime;
+	float ObjectLevel;
 
 	ObjectType ObjType;
 
@@ -55,6 +56,8 @@ public:
 	void ChangeObjectPosition(float x, float y, float z);
 
 	ObjectType GetObjectType();
+
+	float GetObjectLevel();
 	
 	//추가 함수부
 	void Update(float elapsedTime);
