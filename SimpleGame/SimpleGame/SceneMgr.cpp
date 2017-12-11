@@ -94,7 +94,8 @@ void SceneMgr::DrawObject()
 					m_objects[OBJECT_BUILDING]->GetObjectGreen(),
 					m_objects[OBJECT_BUILDING]->GetObjectBlue(),
 					m_objects[OBJECT_BUILDING]->GetObjectAlpha(),
-					m_BuildingID
+					m_BuildingID,
+					0.1
 				);
 			}
 			else {
@@ -107,6 +108,7 @@ void SceneMgr::DrawObject()
 					m_objects[i]->GetObjectGreen(),
 					m_objects[i]->GetObjectBlue(),
 					m_objects[i]->GetObjectAlpha(),
+					1
 					//m_objects[i]->GetObjectLevel()
 				);
 			}
